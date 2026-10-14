@@ -18,7 +18,7 @@ export function errorResponse(err: unknown, requestId: string) {
   console.error(JSON.stringify({ scope: "api", requestId, status: "UNEXPECTED" }));
   const body: ApiError = {
     code: "INTERNAL_ERROR",
-    message: "Something went wrong on our side. Your text is still here; please try again.",
+    message: "We hit a problem on our end. Your text is still here. Try again in a moment.",
     retryable: true,
     requestId,
   };

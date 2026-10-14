@@ -30,7 +30,7 @@ import { evaluateSchema, generateSchema, nextSchema } from "./schemas";
 const INVALID = () =>
   new AppError(
     "INVALID_OUTPUT",
-    "The AI returned questions that were not properly grounded in your resume. Please try again.",
+    "The generated questions didn't match your resume closely enough. Try again.",
     502,
     true,
   );
@@ -131,7 +131,7 @@ export async function evaluateAnswer(req: EvaluateRequest): Promise<Evaluation> 
   if (!result.ok)
     throw new AppError(
       "INVALID_OUTPUT",
-      "The AI returned feedback we could not validate. Your answer is saved; please try again.",
+      "We couldn't verify the feedback for this answer. Your answer is saved. Try again.",
       502,
       true,
     );

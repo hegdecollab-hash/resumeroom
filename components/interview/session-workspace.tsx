@@ -100,7 +100,7 @@ export function SessionWorkspace({ id }: { id: string }) {
   if (state.status === "loading")
     return (
       <div role="status" className="text-ink-soft mx-auto flex max-w-6xl items-center gap-2 px-4 py-16 sm:px-6">
-        <Loader2 aria-hidden className="size-5 animate-spin" /> Loading session…
+        <Loader2 aria-hidden className="size-5 animate-spin" /> Opening your session…
       </div>
     );
   if (state.status === "missing") return <SessionMissing />;
@@ -154,7 +154,9 @@ export function SessionWorkspace({ id }: { id: string }) {
       return await fn();
     } catch (err) {
       setError(
-        err instanceof ClientApiError ? err.message : "Something went wrong. Your answer is saved; please try again.",
+        err instanceof ClientApiError
+          ? err.message
+          : "We couldn't complete that request. Your answer is saved. Try again.",
       );
       return undefined;
     } finally {
@@ -216,7 +218,7 @@ export function SessionWorkspace({ id }: { id: string }) {
     }));
     const res = await withRequest("adapt", () => postJson<NextResponse>("/api/interview/next", body));
     if (!res) {
-      setAdaptNote("We couldn't adjust the next question's difficulty, so it stays as it was.");
+      setAdaptNote("We couldn't adjust the next question's difficulty, so it stays at its current level.");
       return;
     }
     const replacement = { ...toQuestion(res.question), id: target.id };
@@ -232,7 +234,7 @@ export function SessionWorkspace({ id }: { id: string }) {
     if (!current) return;
     const text = draft.trim();
     if (!text) {
-      setError("Write an answer before checking it. Empty answers aren't graded.");
+      setError("Write an answer first. Empty answers can't be scored.");
       return;
     }
     if (draft.length > LIMITS.answerChars) {
@@ -345,7 +347,7 @@ export function SessionWorkspace({ id }: { id: string }) {
           <h1 className="font-semibold break-words">{session.title}</h1>
         </div>
         <Button variant="secondary" onClick={finish} disabled={busy !== null}>
-          Finish practice
+          End session
         </Button>
       </div>
 
@@ -358,12 +360,10 @@ export function SessionWorkspace({ id }: { id: string }) {
           <Notice tone="info">{session.notice}</Notice>
         ) : null}
         {!state.persisted ? (
-          <Notice tone="warn">
-            This session is kept in this tab only. Refreshing or closing the tab will lose it.
-          </Notice>
+          <Notice tone="warn">This session lives in this tab only. Refreshing or closing the tab will erase it.</Notice>
         ) : null}
         {offline ? (
-          <Notice tone="warn">You&apos;re offline. You can keep writing; checking answers needs a connection.</Notice>
+          <Notice tone="warn">You&apos;re offline. Keep writing; reconnect to score your answer.</Notice>
         ) : null}
       </div>
 
@@ -530,7 +530,7 @@ export function SessionWorkspace({ id }: { id: string }) {
                 }}
               >
                 <summary className="text-ink-soft inline-flex min-h-11 cursor-pointer list-none items-center gap-1 font-semibold [&::-webkit-details-marker]:hidden">
-                  {settled ? "Expected concepts" : "Reveal expected concepts (marks this answer as assisted)"}
+                  {settled ? "Expected concepts" : "Show expected concepts (marks this answer as assisted)"}
                   <ChevronDown aria-hidden className="size-4 transition-transform group-open:rotate-180" />
                 </summary>
                 <ul className="text-ink-soft list-disc space-y-1 pl-5">
@@ -576,19 +576,19 @@ export function SessionWorkspace({ id }: { id: string }) {
                   aria-invalid={draft.length > LIMITS.answerChars}
                 />
                 <p id="answer-help" className="text-ink-faint">
-                  Drafts save automatically on this device.
+                  Your draft saves automatically on this device.
                   {session.revealed[current.id] ? " This attempt will be marked as assisted." : ""}
                 </p>
                 {error ? <Notice tone="error">{error}</Notice> : null}
                 {busy === "evaluate" && slow ? (
                   <Notice tone="info" live>
-                    The AI provider is slower than usual. Your answer is saved.
+                    This is taking longer than usual. Your answer is saved.
                   </Notice>
                 ) : null}
                 <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
                   {!settled ? (
                     <Button variant="ghost" onClick={skip} disabled={busy !== null}>
-                      <SkipForward aria-hidden /> Skip question
+                      <SkipForward aria-hidden /> Skip
                     </Button>
                   ) : (
                     <Button variant="ghost" onClick={() => setEditing(false)} disabled={busy !== null}>
@@ -602,10 +602,10 @@ export function SessionWorkspace({ id }: { id: string }) {
                   >
                     {busy === "evaluate" ? (
                       <>
-                        <Loader2 aria-hidden className="animate-spin" /> Checking…
+                        <Loader2 aria-hidden className="animate-spin" /> Scoring your answer…
                       </>
                     ) : (
-                      "Check my answer"
+                      "Score my answer"
                     )}
                   </Button>
                 </div>
@@ -616,7 +616,7 @@ export function SessionWorkspace({ id }: { id: string }) {
               <Card className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <p className="text-ink-soft">You skipped this question.</p>
                 <Button variant="secondary" onClick={() => setEditing(true)}>
-                  Answer it now
+                  Answer this question
                 </Button>
               </Card>
             ) : null}
@@ -633,7 +633,7 @@ export function SessionWorkspace({ id }: { id: string }) {
                 {error ? <Notice tone="error">{error}</Notice> : null}
                 {busy === "probe" && slow ? (
                   <Notice tone="info" live>
-                    The AI provider is slower than usual.
+                    This is taking longer than usual.
                   </Notice>
                 ) : null}
                 <div className="no-print flex flex-col gap-2 sm:flex-row sm:justify-end">
@@ -645,7 +645,7 @@ export function SessionWorkspace({ id }: { id: string }) {
                       setEditing(true);
                     }}
                   >
-                    Try again
+                    Revise my answer
                   </Button>
                   {canProbe ? (
                     <Button variant="secondary" disabled={busy !== null || offline} onClick={() => void askProbe()}>
@@ -670,7 +670,7 @@ export function SessionWorkspace({ id }: { id: string }) {
                     </Button>
                   ) : (
                     <Button disabled={busy !== null} onClick={finish}>
-                      See my report
+                      View my report
                     </Button>
                   )}
                 </div>

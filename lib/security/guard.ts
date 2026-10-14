@@ -32,10 +32,10 @@ export async function readJsonBody(req: Request, maxBytes: number): Promise<unkn
     throw new AppError("UNSUPPORTED_MEDIA_TYPE", "Send the request as JSON.", 415);
   const declared = Number(req.headers.get("content-length") ?? "0");
   if (declared > maxBytes)
-    throw new AppError("PAYLOAD_TOO_LARGE", "The request is larger than the allowed limit.", 413);
+    throw new AppError("PAYLOAD_TOO_LARGE", "This request is too large. Shorten your text and try again.", 413);
   const text = await req.text();
   if (new TextEncoder().encode(text).byteLength > maxBytes)
-    throw new AppError("PAYLOAD_TOO_LARGE", "The request is larger than the allowed limit.", 413);
+    throw new AppError("PAYLOAD_TOO_LARGE", "This request is too large. Shorten your text and try again.", 413);
   try {
     return JSON.parse(text);
   } catch {

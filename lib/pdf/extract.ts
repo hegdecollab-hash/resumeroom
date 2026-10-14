@@ -15,13 +15,13 @@ export class ExtractError extends Error {
 }
 
 export const EXTRACT_MESSAGES: Record<ExtractErrorCode, string> = {
-  not_pdf: "This file isn't a PDF. Upload a PDF resume or paste your resume text.",
+  not_pdf: "This file isn't a PDF. Choose a PDF resume or paste your resume text.",
   too_large: `This PDF is larger than ${LIMITS.pdfBytes / 1024 / 1024} MB. Upload a smaller PDF or paste your resume text.`,
   too_many_pages: `This PDF has more than ${LIMITS.pdfPages} pages. Upload a shorter resume or paste the text.`,
   encrypted: "This PDF is password-protected. Remove the password and upload it again, or paste your resume text.",
-  corrupt: "We couldn't read this PDF. It may be damaged. Try exporting it again or paste your resume text.",
+  corrupt: "This PDF appears to be damaged. Export it again, or paste your resume text.",
   no_text: "This PDF has no readable text. Upload a text-based PDF or paste your resume text.",
-  cancelled: "Extraction cancelled.",
+  cancelled: "PDF reading cancelled.",
 };
 
 export interface ExtractResult {

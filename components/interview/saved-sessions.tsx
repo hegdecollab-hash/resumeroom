@@ -17,26 +17,28 @@ export function SavedSessions({ sessions, onChange }: { sessions: SessionSummary
         <h2 className="font-semibold">Saved on this device</h2>
         {sessions.length ? (
           <ConfirmDialog
-            trigger={<Button variant="ghost">Delete all my data</Button>}
+            trigger={<Button variant="ghost">Delete all data</Button>}
             title="Delete all your data?"
-            description="This removes every session, draft and setting this app saved in this browser. It can't be undone."
+            description="Every session, draft and setting saved in this browser will be removed. This can't be undone."
             confirmLabel="Delete everything"
             onConfirm={() => {
               const ok = deleteAllData();
               onChange();
-              if (ok) toast.success("All data deleted from this browser.", { id: "delete-all" });
+              if (ok) toast.success("All ResumeRoom data deleted from this browser.", { id: "delete-all" });
               else
-                toast.error("Some data couldn't be removed. Try clearing site data in your browser settings.", {
+                toast.error("Some data couldn't be deleted. Clear site data in your browser settings to finish.", {
                   id: "delete-all",
                 });
             }}
           />
         ) : null}
       </div>
-      <p className="text-ink-faint mt-1">Only in this browser. Clearing site data or switching browsers loses them.</p>
+      <p className="text-ink-faint mt-1">
+        Stored only in this browser. Clearing site data or switching browsers removes them.
+      </p>
       {sessions.length === 0 ? (
         <p className="bg-muted text-ink-soft mt-4 rounded-[var(--radius-control)] p-4">
-          No saved sessions yet. Your practice sessions will appear here.
+          No sessions yet. Generate your first set of questions and it will appear here.
         </p>
       ) : (
         <ul className="divide-line mt-4 divide-y">
@@ -55,7 +57,7 @@ export function SavedSessions({ sessions, onChange }: { sessions: SessionSummary
                 {s.source === "sample" ? <Badge tone="warn">Sample</Badge> : null}
                 <Button asChild variant="secondary">
                   <Link href={s.status === "finished" ? `/session/${s.id}/report` : `/session/${s.id}`}>
-                    {s.status === "finished" ? "Report" : "Continue"}
+                    {s.status === "finished" ? "View report" : "Resume"}
                   </Link>
                 </Button>
                 <ConfirmDialog
@@ -65,13 +67,17 @@ export function SavedSessions({ sessions, onChange }: { sessions: SessionSummary
                     </Button>
                   }
                   title="Delete this session?"
-                  description="Its questions, answers and feedback will be removed from this browser."
+                  description="Its questions, answers and feedback will be permanently removed from this browser."
                   confirmLabel="Delete session"
                   onConfirm={() => {
                     const ok = deleteSession(s.id);
                     onChange();
                     if (ok) toast.success("Session deleted.", { id: `del-${s.id}` });
-                    else toast.error("Couldn't delete the session from browser storage.", { id: `del-${s.id}` });
+                    else
+                      toast.error(
+                        "This session couldn't be deleted. Check your browser storage settings and try again.",
+                        { id: `del-${s.id}` },
+                      );
                   }}
                 />
               </div>

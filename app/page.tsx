@@ -6,18 +6,18 @@ import { Button } from "@/components/ui/button";
 const steps = [
   {
     title: "Add your resume",
-    text: "Upload a text-based PDF. It's read on your device, and you review the text before anything is sent.",
+    text: "Upload a text-based PDF. It's read on your device, and you approve the text before anything leaves it.",
   },
   {
-    title: "Add a job description, if you have one",
-    text: "Optional. Without it, practice comes from your resume alone. With it, skills only the job asks for are marked as gaps.",
+    title: "Add a job description (optional)",
+    text: "Skip it to practice from your resume alone. With it, skills only the job asks for are marked as gaps.",
   },
   {
-    title: "Answer, in writing",
+    title: "Write your answers",
     text: "HR/behavioral and technical questions, one at a time, each pointing at the line of your resume it came from.",
   },
   {
-    title: "Read the feedback, then go deeper",
+    title: "Review feedback, then go deeper",
     text: "Four rubric scores, specific strengths and gaps, an example answer built only from your facts, and follow-up probes.",
   },
 ];
@@ -63,14 +63,14 @@ export default function Home() {
       {/* Hero: asymmetric, left-set display type */}
       <section className="grid gap-12 pt-12 pb-16 sm:pt-20 lg:grid-cols-12 lg:gap-8 lg:pb-24">
         <Reveal className="lg:col-span-7">
-          <Eyebrow n="§">Practice questions based on your resume</Eyebrow>
+          <Eyebrow n="§">Resume-based interview practice</Eyebrow>
           <h1 className="text-hero mt-6 font-normal text-balance">
             Interview practice built around <em className="text-accent">your</em> resume.
           </h1>
           <div className="mt-8 grid gap-8 sm:grid-cols-[1fr_auto] sm:items-end lg:max-w-xl lg:grid-cols-1">
             <p className="text-ink-soft max-w-md">
-              Turn your projects and experience into focused interview questions. Add a job description to prepare for a
-              specific role.
+              Turn your projects and experience into the questions interviewers actually ask. Add a job description to
+              prepare for a specific role.
             </p>
           </div>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -87,7 +87,7 @@ export default function Home() {
             </Link>
           </div>
           <p className="border-line text-ink-faint mt-8 border-t pt-4">
-            No account. Your resume text and sessions stay in this browser.
+            No account needed. Your resume and sessions never leave this browser.
           </p>
         </Reveal>
 
@@ -134,7 +134,7 @@ export default function Home() {
               {[
                 [
                   "Grounded, or not shown",
-                  "Every personalized question cites an exact line from your resume. Output that invents evidence is rejected, not dressed up.",
+                  "Every personalized question cites an exact line from your resume. If the evidence doesn't exist, the question doesn't either.",
                 ],
                 [
                   "Feedback you can act on",
@@ -161,7 +161,7 @@ export default function Home() {
           <div className="lg:col-span-3">
             <Eyebrow n="03">How it works</Eyebrow>
             <h2 id="how" className="text-heading mt-4 font-normal">
-              Four steps, about fifteen minutes.
+              Four steps. About fifteen minutes.
             </h2>
           </div>
           <ol className="grid gap-x-8 sm:grid-cols-2 lg:col-span-9">
@@ -182,7 +182,7 @@ export default function Home() {
           <div className="lg:col-span-3">
             <Eyebrow n="04">Questions</Eyebrow>
             <h2 id="faq" className="text-heading mt-4 font-normal">
-              Before you start.
+              Before you begin.
             </h2>
           </div>
           <div className="divide-line border-line divide-y border-y lg:col-span-9">
@@ -226,7 +226,7 @@ export default function Home() {
 
 function ProductPreview() {
   return (
-    <figure aria-label="Synthetic product preview" className="relative">
+    <figure aria-label="Preview of a practice question with sample feedback" className="relative">
       <div className="border-ink/15 bg-surface shadow-lift rotate-[0.6deg] rounded-[var(--radius-card)] border p-6 sm:p-7">
         <div className="text-label text-ink-faint flex items-center justify-between font-mono tracking-wide uppercase">
           <span>Q 02 / 10 · Technical · Medium</span>
@@ -260,7 +260,7 @@ function ProductPreview() {
         </div>
       </div>
       <figcaption className="text-label text-ink-faint mt-4 font-mono tracking-wide uppercase">
-        Illustration · fictional resume, sample data
+        Illustration · fictional resume and sample scores
       </figcaption>
     </figure>
   );

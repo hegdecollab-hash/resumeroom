@@ -96,7 +96,7 @@ export function ResumeUpload({
             <p className="text-ink-soft">
               {state.total
                 ? `Reading page ${state.page} of ${state.total} on this device…`
-                : "Opening PDF on this device…"}
+                : "Opening your PDF on this device…"}
             </p>
             <Button variant="ghost" onClick={() => abortRef.current?.abort()}>
               <X aria-hidden /> Cancel
@@ -106,7 +106,7 @@ export function ResumeUpload({
           <>
             <FileUp aria-hidden className="text-accent size-6" />
             <div>
-              <p className="font-semibold">Upload your resume (PDF)</p>
+              <p className="font-semibold">Drop your resume PDF here</p>
               <p className="text-ink-faint">
                 Text-based PDF, up to {LIMITS.pdfBytes / 1024 / 1024} MB and {LIMITS.pdfPages} pages. Read on this
                 device.
@@ -121,19 +121,19 @@ export function ResumeUpload({
               onChange={(e) => void handle(e.target.files?.[0])}
             />
             <Button variant="secondary" onClick={() => inputRef.current?.click()}>
-              {state.kind === "done" ? "Choose a different PDF" : "Choose PDF"}
+              {state.kind === "done" ? "Choose a different PDF" : "Choose a PDF"}
             </Button>
           </>
         )}
       </div>
       {state.kind === "done" ? (
         <Notice tone="success" live title={`Read ${state.fileName}`}>
-          {state.pageCount} {state.pageCount === 1 ? "page" : "pages"}. Review the text below and fix anything that
-          looks out of order.
+          {state.pageCount} {state.pageCount === 1 ? "page" : "pages"}. Check the text below and fix anything out of
+          order.
         </Notice>
       ) : null}
       {state.kind === "error" ? (
-        <Notice tone="error" title="We couldn't use that PDF">
+        <Notice tone="error" title="We can't read this PDF">
           {state.message}
         </Notice>
       ) : null}

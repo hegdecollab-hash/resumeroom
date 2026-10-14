@@ -44,8 +44,8 @@ export function useSession(id: string) {
           queueMicrotask(() =>
             toast.error(
               res.problem === "quota"
-                ? "Browser storage is full. We'll keep this session in this tab only. Delete old sessions on the Practice page to save again."
-                : "Browser storage is unavailable. We'll keep this session in this tab only.",
+                ? "Browser storage is full. This session will stay in this tab only. Delete older sessions on the Practice page to save again."
+                : "Browser storage is unavailable. This session will stay in this tab only.",
               { id: "storage" },
             ),
           );

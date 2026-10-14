@@ -41,7 +41,7 @@ import { ResumeUpload } from "./resume-upload";
 import { SavedSessions } from "./saved-sessions";
 
 export const PRIVACY_NOTICE =
-  "Your PDF is read on this device. Your resume text, sessions, and reports are saved only in this browser. When you generate questions or check an answer, the reviewed resume text, optional job description, and your answer are sent through this app's server route to OpenRouter and the selected model provider. We do not store them on our server.";
+  "Your PDF is read on this device. Your resume text, sessions, and reports are saved only in this browser. When you generate questions or check an answer, the reviewed resume text, optional job description, and your answer are sent through this app's server route to OpenRouter and the selected model provider. Our server doesn't store them.";
 
 interface Values {
   resumeText: string;
@@ -55,15 +55,15 @@ interface Values {
 const schema = Yup.object({
   resumeText: Yup.string()
     .trim()
-    .required("Add your resume text to continue.")
-    .min(LIMITS.minResumeChars, `Resume text looks too short (minimum ${LIMITS.minResumeChars} characters).`)
+    .required("Add your resume to continue.")
+    .min(LIMITS.minResumeChars, `Your resume text is too short. Add at least ${LIMITS.minResumeChars} characters.`)
     .max(
       LIMITS.resumeChars,
-      `Resume text is over the ${LIMITS.resumeChars.toLocaleString("en-US")} character limit. Shorten it to continue.`,
+      `Your resume text exceeds the ${LIMITS.resumeChars.toLocaleString("en-US")} character limit. Shorten it to continue.`,
     ),
   jdText: Yup.string().max(
     LIMITS.jdChars,
-    `Job description is over the ${LIMITS.jdChars.toLocaleString("en-US")} character limit. Shorten it to continue.`,
+    `The job description exceeds the ${LIMITS.jdChars.toLocaleString("en-US")} character limit. Shorten it to continue.`,
   ),
   focus: Yup.string().oneOf(["mixed", "behavioral", "technical"]).required(),
   difficulty: Yup.string().oneOf(["easy", "medium", "hard"]).required(),
@@ -136,8 +136,8 @@ export function PracticeClient() {
     if (!res.ok) {
       toast.error(
         res.problem === "quota"
-          ? "Browser storage is full. This session is kept in this tab only; delete old sessions to save again."
-          : "Browser storage is unavailable. This session is kept in this tab only.",
+          ? "Browser storage is full. This session will stay in this tab only. Delete older sessions to save again."
+          : "Browser storage is unavailable. This session will stay in this tab only.",
         { id: "storage" },
       );
     }
@@ -174,7 +174,7 @@ export function PracticeClient() {
       setError(
         err instanceof ClientApiError
           ? err
-          : new ClientApiError("UNKNOWN", "Something went wrong. Please try again.", true),
+          : new ClientApiError("UNKNOWN", "We couldn't generate questions. Try again in a moment.", true),
       );
     } finally {
       clearTimeout(slowTimer);
@@ -204,7 +204,7 @@ export function PracticeClient() {
   if (!initial) {
     return (
       <div role="status" className="text-ink-soft flex items-center gap-2 py-16">
-        <Loader2 aria-hidden className="size-5 animate-spin" /> Loading your workspace…
+        <Loader2 aria-hidden className="size-5 animate-spin" /> Preparing your workspace…
       </div>
     );
   }
@@ -220,13 +220,13 @@ export function PracticeClient() {
               <AutosaveDraft values={values} fileName={fileInfo} />
               {!storageOk ? (
                 <Notice tone="warn" title="Browser storage is unavailable">
-                  This browser is blocking storage (often private mode). You can still practice, but nothing is saved
-                  after you close this tab.
+                  This browser is blocking storage, often because of private mode. You can still practice, but nothing
+                  is saved after you close this tab.
                 </Notice>
               ) : null}
               {offline ? (
                 <Notice tone="warn" title="You're offline">
-                  You can upload and edit your resume. Generating questions needs a connection.
+                  You can still upload and edit your resume. Reconnect to generate questions.
                 </Notice>
               ) : null}
 
@@ -268,7 +268,7 @@ export function PracticeClient() {
                       value={values.resumeText}
                       onChange={(e) => void setFieldValue("resumeText", e.target.value)}
                       onBlur={() => void setFieldTouched("resumeText", true)}
-                      placeholder="Paste your resume text here, or upload a PDF above."
+                      placeholder="Paste your resume text, or upload a PDF above."
                       aria-invalid={Boolean(errors.resumeText && (touched.resumeText || submitCount > 0))}
                       aria-describedby="resumeText-help"
                     />
@@ -301,7 +301,7 @@ export function PracticeClient() {
                   rows={6}
                   value={values.jdText}
                   onChange={(e) => void setFieldValue("jdText", e.target.value)}
-                  placeholder="Paste a job description to prepare for a specific role."
+                  placeholder="Paste the job description for the role you're targeting."
                   aria-invalid={Boolean(errors.jdText)}
                   aria-describedby="jdText-error"
                 />
@@ -374,7 +374,7 @@ export function PracticeClient() {
                   <div>
                     <Label htmlFor="save">Save sessions on this device</Label>
                     <p className="text-ink-faint">
-                      Turn off to keep sessions in memory only; they disappear when you close or refresh the tab.
+                      Turn this off to keep sessions in this tab only. They disappear when you close or refresh it.
                     </p>
                   </div>
                   <Switch
@@ -390,7 +390,7 @@ export function PracticeClient() {
                 </div>
                 <div>
                   <Button variant="secondary" aria-expanded={showOutgoing} onClick={() => setShowOutgoing((s) => !s)}>
-                    {showOutgoing ? "Hide outgoing text" : "Show exactly what will be sent"}
+                    {showOutgoing ? "Hide what will be sent" : "Preview exactly what will be sent"}
                   </Button>
                   {showOutgoing ? (
                     <div className="mt-3 space-y-3">
@@ -402,13 +402,13 @@ export function PracticeClient() {
               </Card>
 
               {error ? (
-                <Notice tone="error" title="Couldn't generate questions">
-                  {error.message} Your resume text and job description are still here.
+                <Notice tone="error" title="We couldn't generate your questions">
+                  {error.message} Your resume and job description are still here.
                 </Notice>
               ) : null}
               {isSubmitting && slow ? (
-                <Notice tone="info" live title="Still working">
-                  The AI provider is slower than usual. Keep this tab open.
+                <Notice tone="info" live title="Still generating">
+                  This is taking longer than usual. Keep this tab open.
                 </Notice>
               ) : null}
 
@@ -443,8 +443,8 @@ export function PracticeClient() {
                   }
                 }}
                 title="Replace your resume text?"
-                description="The text you've reviewed or edited will be replaced by the new PDF's text."
-                confirmLabel="Replace text"
+                description="Your reviewed or edited text will be replaced with text from the new PDF."
+                confirmLabel="Replace resume text"
                 onConfirm={() => {
                   confirm?.(true);
                   setConfirm(null);

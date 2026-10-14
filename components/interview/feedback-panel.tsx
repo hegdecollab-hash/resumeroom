@@ -61,8 +61,8 @@ export function FeedbackPanel({ attempt, onRevealExample }: { attempt: Attempt; 
       <p className="text-ink-soft">{ev.conciseExplanation}</p>
 
       <div className="grid gap-5 md:grid-cols-2">
-        <List title="Strengths" items={ev.strengths} empty="No clear strengths identified yet." />
-        <List title="Improve" items={ev.improvements} empty="Nothing major to improve." />
+        <List title="Strengths" items={ev.strengths} empty="No clear strengths in this answer yet." />
+        <List title="To improve" items={ev.improvements} empty="No major gaps in this answer." />
       </div>
       {ev.missingConcepts.length ? <List title="Missing concepts" items={ev.missingConcepts} /> : null}
       {ev.uncertaintyNote ? (

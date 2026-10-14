@@ -22,7 +22,7 @@ const mono = JetBrains_Mono({
 });
 
 const description =
-  "Practice questions based on your resume. Turn your projects and experience into focused interview questions, then get feedback on typed answers.";
+  "Rehearse the interview questions your resume invites. Write your answers, get specific feedback, and keep everything in your browser. No account needed.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(APP_URL),
@@ -56,7 +56,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           href="#main"
           className="bg-surface sr-only z-50 rounded-lg p-3 font-semibold focus:not-sr-only focus:fixed focus:top-2 focus:left-2"
         >
-          Skip to content
+          Skip to main content
         </a>
         <Header />
         <main id="main" className="flex-1">

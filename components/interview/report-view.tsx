@@ -26,7 +26,7 @@ export function ReportView({ id }: { id: string }) {
   if (state.status === "loading")
     return (
       <div role="status" className="text-ink-soft mx-auto flex max-w-5xl items-center gap-2 px-4 py-16 sm:px-6">
-        <Loader2 aria-hidden className="size-5 animate-spin" /> Loading report…
+        <Loader2 aria-hidden className="size-5 animate-spin" /> Opening your report…
       </div>
     );
   if (state.status === "missing") return <SessionMissing />;
@@ -57,7 +57,7 @@ export function ReportView({ id }: { id: string }) {
         </div>
         <div className="no-print flex flex-wrap gap-2">
           <Button variant="secondary" onClick={download}>
-            <Download aria-hidden /> Download my report
+            <Download aria-hidden /> Download report
           </Button>
           <Button variant="ghost" onClick={() => window.print()}>
             <Printer aria-hidden /> Print
@@ -66,7 +66,9 @@ export function ReportView({ id }: { id: string }) {
       </div>
 
       {session.source === "sample" ? (
-        <Notice tone="warn">This session used prepared sample questions, not live AI-generated questions.</Notice>
+        <Notice tone="warn">
+          This session used prepared sample questions, not questions generated from your resume.
+        </Notice>
       ) : null}
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -78,12 +80,12 @@ export function ReportView({ id }: { id: string }) {
         />
         <Stat
           label="First-attempt average"
-          value={stats.firstAttemptAverage === null ? "No graded answers yet" : `${stats.firstAttemptAverage} / 10`}
+          value={stats.firstAttemptAverage === null ? "No scored answers yet" : `${stats.firstAttemptAverage} / 10`}
           tone={stats.firstAttemptAverage}
         />
         <Stat
           label="Best-attempt average"
-          value={stats.bestAttemptAverage === null ? "No graded answers yet" : `${stats.bestAttemptAverage} / 10`}
+          value={stats.bestAttemptAverage === null ? "No scored answers yet" : `${stats.bestAttemptAverage} / 10`}
           tone={stats.bestAttemptAverage}
         />
       </div>
@@ -103,7 +105,7 @@ export function ReportView({ id }: { id: string }) {
           <p className="text-ink-soft">Answer at least one question to see scores and an improvement plan.</p>
           <div>
             <Button asChild>
-              <Link href={`/session/${session.id}`}>Continue practicing</Link>
+              <Link href={`/session/${session.id}`}>Resume practice</Link>
             </Button>
           </div>
         </Card>
@@ -205,7 +207,7 @@ export function ReportView({ id }: { id: string }) {
       <div className="no-print flex flex-col gap-3 sm:flex-row sm:justify-between">
         <div className="flex flex-col gap-3 sm:flex-row">
           <Button asChild>
-            <Link href="/practice">Practice again</Link>
+            <Link href="/practice">Start a new session</Link>
           </Button>
           <Button asChild variant="secondary">
             <Link href={`/session/${session.id}`}>Back to session</Link>
@@ -218,13 +220,16 @@ export function ReportView({ id }: { id: string }) {
             </Button>
           }
           title="Delete this session?"
-          description="Its questions, answers, feedback and this report will be removed from this browser. Download the report first if you want to keep it."
+          description="Its questions, answers, feedback and this report will be permanently removed from this browser. Download the report first to keep a copy."
           confirmLabel="Delete session"
           onConfirm={() => {
             if (deleteSession(session.id)) {
               toast.success("Session deleted.", { id: "del" });
               router.push("/practice");
-            } else toast.error("Couldn't delete the session from browser storage.", { id: "del" });
+            } else
+              toast.error("This session couldn't be deleted. Check your browser storage settings and try again.", {
+                id: "del",
+              });
           }}
         />
       </div>

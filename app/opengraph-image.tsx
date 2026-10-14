@@ -23,7 +23,7 @@ export default function OpengraphImage() {
       <div style={{ fontSize: 72, fontWeight: 600, marginTop: 24, lineHeight: 1.1 }}>
         Interview practice built around your resume.
       </div>
-      <div style={{ fontSize: 30, color: "#4b5260", marginTop: 28 }}>Practice questions based on your resume.</div>
+      <div style={{ fontSize: 30, color: "#4b5260", marginTop: 28 }}>Rehearse the questions your resume invites.</div>
     </div>,
     size,
   );

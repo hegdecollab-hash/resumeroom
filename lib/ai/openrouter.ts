@@ -25,7 +25,7 @@ export function getConfig() {
   const apiKey = process.env.OPENROUTER_API_KEY?.trim();
   const model = process.env.OPENROUTER_MODEL?.trim();
   if (!apiKey || !model)
-    throw new AppError("NOT_CONFIGURED", "The AI service is not configured on this server yet.", 503);
+    throw new AppError("NOT_CONFIGURED", "Question generation isn't available yet. Check back soon.", 503);
   return { apiKey, model };
 }
 
@@ -43,14 +43,22 @@ function mapStatus(status: number, providerMessage: string): AppError {
       502,
     );
   if (status === 402)
-    return new AppError("INSUFFICIENT_CREDITS", "The AI service is out of credits. Please try again later.", 402);
+    return new AppError(
+      "INSUFFICIENT_CREDITS",
+      "Practice is paused while we top up AI capacity. Try again later.",
+      402,
+    );
   if (status === 404 || /no endpoints? found/i.test(providerMessage))
-    return new AppError("MODEL_UNAVAILABLE", "The configured AI model is unavailable right now.", 502);
-  if (status === 408)
-    return new AppError("PROVIDER_TIMEOUT", "The AI provider timed out. Please try again.", 504, true);
+    return new AppError("MODEL_UNAVAILABLE", "The AI model is unavailable right now. Try again shortly.", 502);
+  if (status === 408) return new AppError("PROVIDER_TIMEOUT", "The AI took too long to respond. Try again.", 504, true);
   if (status === 429)
-    return new AppError("PROVIDER_RATE_LIMITED", "The AI provider is busy. Wait a moment and try again.", 429, true);
-  return new AppError("PROVIDER_ERROR", "The AI provider had a problem. Please try again.", 502, true);
+    return new AppError(
+      "PROVIDER_RATE_LIMITED",
+      "The AI is handling a lot of requests. Wait a moment and try again.",
+      429,
+      true,
+    );
+  return new AppError("PROVIDER_ERROR", "The AI couldn't complete this request. Try again.", 502, true);
 }
 
 async function once(opts: CallOptions, apiKey: string, model: string): Promise<unknown> {
@@ -84,8 +92,8 @@ async function once(opts: CallOptions, apiKey: string, model: string): Promise<u
   } catch (err) {
     const name = err instanceof Error ? err.name : "";
     if (name === "TimeoutError" || name === "AbortError")
-      throw new AppError("PROVIDER_TIMEOUT", "The AI provider took too long to respond. Please try again.", 504, true);
-    throw new AppError("PROVIDER_UNREACHABLE", "Could not reach the AI provider. Please try again.", 502, true);
+      throw new AppError("PROVIDER_TIMEOUT", "The AI took too long to respond. Try again.", 504, true);
+    throw new AppError("PROVIDER_UNREACHABLE", "We couldn't reach the AI. Try again.", 502, true);
   }
 
   const text = await res.text();
@@ -115,16 +123,16 @@ async function once(opts: CallOptions, apiKey: string, model: string): Promise<u
     completionTokens: usage?.completion_tokens ?? null,
   });
 
-  if (!choice) throw new AppError("EMPTY_RESPONSE", "The AI provider returned no answer. Please try again.", 502, true);
+  if (!choice) throw new AppError("EMPTY_RESPONSE", "The AI didn't return a response. Try again.", 502, true);
   if (choice.finish_reason === "length")
     throw new AppError("OUTPUT_TRUNCATED", "The AI response was cut off. Try fewer questions or shorter text.", 502);
   const content = choice.message?.content;
   if (typeof content !== "string" || content.trim() === "")
-    throw new AppError("EMPTY_RESPONSE", "The AI provider returned an empty answer. Please try again.", 502, true);
+    throw new AppError("EMPTY_RESPONSE", "The AI returned an empty response. Try again.", 502, true);
   try {
     return JSON.parse(content.replace(/^```(?:json)?\s*|\s*```$/g, ""));
   } catch {
-    throw new AppError("MALFORMED_OUTPUT", "The AI returned an unreadable response. Please try again.", 502, true);
+    throw new AppError("MALFORMED_OUTPUT", "The AI returned a response we couldn't read. Try again.", 502, true);
   }
 }
 

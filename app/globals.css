@@ -1,0 +1,75 @@
+@import "tailwindcss";
+
+/* Design tokens: warm white surfaces, charcoal text, calm indigo accent, soft gray borders. */
+@theme {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --color-canvas: #fbfaf7;
+  --color-surface: #ffffff;
+  --color-muted: #f4f2ee;
+  --color-ink: #1f2328;
+  --color-ink-soft: #4b5260;
+  --color-ink-faint: #6b7280;
+  --color-line: #e6e3dd;
+  --color-line-strong: #d4d0c8;
+  --color-accent: #4f46e5;
+  --color-accent-strong: #4338ca;
+  --color-accent-soft: #eef0ff;
+  --color-success: #2f7a4f;
+  --color-success-soft: #ecf6ef;
+  --color-warn: #8a5a00;
+  --color-warn-soft: #fff6e0;
+  --color-danger: #b42318;
+  --color-danger-soft: #fdeeec;
+  --color-toast-bg: #fffdf9;
+  --color-toast-ink: #1a1a1a;
+  --color-toast-gold: #c8a44d;
+
+  /* Three core type sizes: body, section heading, hero. */
+  --text-body: 1rem;
+  --text-body--line-height: 1.6;
+  --text-heading: clamp(1.375rem, 1.1rem + 1vw, 1.875rem);
+  --text-heading--line-height: 1.25;
+  --text-hero: clamp(2.125rem, 1.4rem + 3.2vw, 3.75rem);
+  --text-hero--line-height: 1.08;
+
+  --radius-card: 14px;
+  --radius-control: 10px;
+  --shadow-soft: 0 1px 2px rgb(31 35 40 / 0.04), 0 4px 16px rgb(31 35 40 / 0.05);
+  --shadow-lift: 0 2px 4px rgb(31 35 40 / 0.05), 0 12px 32px rgb(31 35 40 / 0.08);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-canvas text-body text-ink antialiased;
+  }
+  :focus-visible {
+    @apply outline-accent outline-2 outline-offset-2;
+  }
+  ::selection {
+    @apply bg-accent-soft text-ink;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: #fff;
+  }
+}

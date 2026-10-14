@@ -236,7 +236,7 @@ function Stat({ label, value, hint, tone }: { label: string; value: string; hint
   return (
     <Card className="p-4 sm:p-5">
       <p className="text-ink-faint">{label}</p>
-      <p className={cn("mt-1 font-semibold", typeof tone === "number" ? scoreTone(tone) : "")}>{value}</p>
+      <p className={cn("font-display mt-1 text-2xl", typeof tone === "number" ? scoreTone(tone) : "")}>{value}</p>
       {hint ? <p className="text-ink-faint">{hint}</p> : null}
     </Card>
   );

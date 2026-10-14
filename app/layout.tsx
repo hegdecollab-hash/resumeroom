@@ -1,12 +1,25 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import { Fraunces, Instrument_Sans, JetBrains_Mono } from "next/font/google";
 import { Footer } from "@/components/site/footer";
 import { Header } from "@/components/site/header";
 import { ToasterProvider } from "@/components/site/toaster-provider";
 import { APP_NAME, APP_URL } from "@/lib/config";
 import "./globals.css";
 
-const inter = Inter({ variable: "--font-inter", subsets: ["latin"], weight: ["400", "600"], display: "swap" });
+const display = Fraunces({
+  variable: "--font-display-serif",
+  subsets: ["latin"],
+  style: ["normal", "italic"],
+  axes: ["SOFT", "opsz"],
+  display: "swap",
+});
+const body = Instrument_Sans({ variable: "--font-body", subsets: ["latin"], display: "swap" });
+const mono = JetBrains_Mono({
+  variable: "--font-label-mono",
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  display: "swap",
+});
 
 const description =
   "Practice questions based on your resume. Turn your projects and experience into focused interview questions, then get feedback on typed answers.";
@@ -33,11 +46,11 @@ export const metadata: Metadata = {
   },
 };
 
-export const viewport: Viewport = { themeColor: "#fbfaf7", width: "device-width", initialScale: 1 };
+export const viewport: Viewport = { themeColor: "#f6f1e7", width: "device-width", initialScale: 1 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${inter.variable} h-full`}>
+    <html lang="en" className={`${display.variable} ${body.variable} ${mono.variable} h-full`}>
       <body className="flex min-h-full flex-col">
         <a
           href="#main"

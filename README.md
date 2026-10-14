@@ -9,7 +9,7 @@ stateless OpenRouter proxy (`app/api/interview/*`).
 
 ## Stack
 
-Next.js 16 (App Router, Turbopack, strict TypeScript) · React 19 · Tailwind CSS 4 · shadcn-style primitives on Radix ·
+Next.js 16 (App Router, Turbopack, strict TypeScript) · React 19 · Tailwind CSS 4 · self-hosted next/font type (Fraunces display serif, Instrument Sans body, JetBrains Mono labels) · shadcn-style primitives on Radix ·
 Formik + Yup · Motion · react-hot-toast · PDF.js (`pdfjs-dist`, self-hosted worker) · Vitest · Playwright (scripts only).
 All versions are pinned in `package.json`; the lockfile is committed.
 

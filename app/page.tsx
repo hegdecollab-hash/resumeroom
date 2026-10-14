@@ -1,30 +1,24 @@
-import { ArrowRight, FileText, ListChecks, MessageSquareText, ShieldCheck, Target, TrendingUp } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { Reveal } from "@/components/site/reveal";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 
 const steps = [
   {
-    icon: FileText,
     title: "Add your resume",
-    text: "Upload a text-based PDF. We read it on your device, and you review the text.",
+    text: "Upload a text-based PDF. It's read on your device, and you review the text before anything is sent.",
   },
   {
-    icon: Target,
-    title: "Add a job description (optional)",
-    text: "Paste one to focus on a specific role, or skip it and practice from your resume alone.",
+    title: "Add a job description, if you have one",
+    text: "Optional. Without it, practice comes from your resume alone. With it, skills only the job asks for are marked as gaps.",
   },
   {
-    icon: MessageSquareText,
-    title: "Answer questions",
-    text: "Type your answers to HR/behavioral and technical questions grounded in your own work.",
+    title: "Answer, in writing",
+    text: "HR/behavioral and technical questions, one at a time, each pointing at the line of your resume it came from.",
   },
   {
-    icon: TrendingUp,
-    title: "Review feedback",
-    text: "Get scores, specific feedback, example answers and follow-up probes, then a short report.",
+    title: "Read the feedback, then go deeper",
+    text: "Four rubric scores, specific strengths and gaps, an example answer built only from your facts, and follow-up probes.",
   },
 ];
 
@@ -55,141 +49,155 @@ const faqs = [
   },
 ];
 
+const Eyebrow = ({ n, children }: { n: string; children: React.ReactNode }) => (
+  <p className="text-label text-ink-faint flex items-center gap-3 font-mono tracking-[0.14em] uppercase">
+    <span className="text-accent">{n}</span>
+    <span aria-hidden className="bg-line-strong h-px w-8" />
+    {children}
+  </p>
+);
+
 export default function Home() {
   return (
     <div className="mx-auto max-w-6xl px-4 sm:px-6">
-      {/* Hero */}
-      <section className="grid items-center gap-10 py-14 sm:py-20 lg:grid-cols-[1.1fr_1fr] lg:gap-14">
-        <Reveal>
-          <Badge tone="accent">Practice questions based on your resume</Badge>
-          <h1 className="text-hero mt-5 font-semibold tracking-tight text-balance">
-            Interview practice built around your resume.
+      {/* Hero: asymmetric, left-set display type */}
+      <section className="grid gap-12 pt-12 pb-16 sm:pt-20 lg:grid-cols-12 lg:gap-8 lg:pb-24">
+        <Reveal className="lg:col-span-7">
+          <Eyebrow n="§">Practice questions based on your resume</Eyebrow>
+          <h1 className="text-hero mt-6 font-normal text-balance">
+            Interview practice built around <em className="text-accent">your</em> resume.
           </h1>
-          <p className="text-ink-soft mt-5 max-w-xl">
-            Turn your projects and experience into focused interview questions. Add a job description to prepare for a
-            specific role.
-          </p>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+          <div className="mt-8 grid gap-8 sm:grid-cols-[1fr_auto] sm:items-end lg:max-w-xl lg:grid-cols-1">
+            <p className="text-ink-soft max-w-md">
+              Turn your projects and experience into focused interview questions. Add a job description to prepare for a
+              specific role.
+            </p>
+          </div>
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
             <Button asChild size="lg">
               <Link href="/practice">
                 Start practicing <ArrowRight aria-hidden />
               </Link>
             </Button>
-            <Button asChild size="lg" variant="secondary">
-              <Link href="/practice?sample=1">Try a sample resume</Link>
-            </Button>
+            <Link
+              href="/practice?sample=1"
+              className="text-ink decoration-accent hover:text-accent inline-flex min-h-12 items-center gap-1.5 px-1 font-semibold underline decoration-2 underline-offset-[6px]"
+            >
+              Try a sample resume <ArrowUpRight aria-hidden className="size-4" />
+            </Link>
           </div>
-          <p className="text-ink-faint mt-4 flex items-center gap-2">
-            <ShieldCheck aria-hidden className="text-success size-4" /> No account. Saved only in your browser.
+          <p className="border-line text-ink-faint mt-8 border-t pt-4">
+            No account. Your resume text and sessions stay in this browser.
           </p>
         </Reveal>
 
-        {/* Product evidence: labeled synthetic preview */}
-        <Reveal delay={0.1}>
+        <Reveal delay={0.1} className="lg:col-span-5 lg:pt-10">
           <ProductPreview />
         </Reveal>
       </section>
 
-      {/* Problem */}
-      <section aria-labelledby="problem" className="border-line border-t py-14 sm:py-20">
-        <Reveal className="grid gap-8 lg:grid-cols-[1fr_1.4fr]">
-          <h2 id="problem" className="text-heading font-semibold">
-            Generic question lists don&apos;t know your work.
-          </h2>
-          <div className="text-ink-soft space-y-4">
-            <p>
-              Most interview prep is the same fifty questions for everyone. Real interviews dig into what&apos;s on your
-              resume: the project you shipped, the tradeoff you made, the bug you chased.
-            </p>
-            <p>
-              If you haven&apos;t practiced explaining your own experience out loud, that&apos;s where answers get
-              vague.
-            </p>
+      {/* Problem: big statement with marginal note */}
+      <section aria-labelledby="problem" className="border-ink border-t py-16 sm:py-24">
+        <div className="grid gap-8 lg:grid-cols-12">
+          <div className="lg:col-span-3">
+            <Eyebrow n="01">The problem</Eyebrow>
           </div>
-        </Reveal>
-      </section>
-
-      {/* Solution */}
-      <section aria-labelledby="solution" className="border-line border-t py-14 sm:py-20">
-        <Reveal>
-          <h2 id="solution" className="text-heading font-semibold">
-            Questions that quote your resume back to you.
-          </h2>
-          <p className="text-ink-soft mt-3 max-w-2xl">
-            Every personalized question points to the line on your resume it came from, so you know why it&apos;s being
-            asked.
-          </p>
-        </Reveal>
-        <div className="mt-8 grid gap-4 md:grid-cols-3">
-          {[
-            {
-              icon: ListChecks,
-              title: "Grounded questions",
-              text: "Each question cites an exact quote from your resume. Ungrounded output is rejected.",
-            },
-            {
-              icon: MessageSquareText,
-              title: "Honest feedback",
-              text: "Four rubric dimensions, specific strengths and gaps, and an example answer that only uses facts you provided.",
-            },
-            {
-              icon: TrendingUp,
-              title: "Adapts as you go",
-              text: "Two strong answers in a row raise the difficulty; two weak ones lower it. Follow-up probes go deeper.",
-            },
-          ].map((f, i) => (
-            <Reveal key={f.title} delay={i * 0.05}>
-              <Card className="h-full">
-                <f.icon aria-hidden className="text-accent size-5" />
-                <h3 className="mt-3 font-semibold">{f.title}</h3>
-                <p className="text-ink-soft mt-2">{f.text}</p>
-              </Card>
-            </Reveal>
-          ))}
+          <Reveal className="lg:col-span-9">
+            <h2 id="problem" className="text-heading font-normal text-balance">
+              Generic question lists don&apos;t know your work. Interviewers do.
+            </h2>
+            <div className="text-ink-soft mt-6 grid gap-6 md:grid-cols-2">
+              <p>
+                Most prep is the same fifty questions for everyone. Real interviews dig into what&apos;s on your resume:
+                the project you shipped, the tradeoff you made, the bug you chased for a week.
+              </p>
+              <p>
+                If you haven&apos;t practiced explaining your own experience, that&apos;s exactly where answers go
+                vague. So we start there.
+              </p>
+            </div>
+          </Reveal>
         </div>
       </section>
 
-      {/* How it works */}
-      <section aria-labelledby="how" className="border-line border-t py-14 sm:py-20">
-        <Reveal>
-          <h2 id="how" className="text-heading font-semibold">
-            How it works
-          </h2>
-        </Reveal>
-        <ol className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {steps.map((s, i) => (
-            <Reveal key={s.title} delay={i * 0.05}>
-              <li className="border-line bg-surface h-full rounded-[var(--radius-card)] border p-5">
-                <div className="flex items-center gap-3">
-                  <span className="bg-accent-soft text-accent grid size-8 place-items-center rounded-full font-semibold">
-                    {i + 1}
-                  </span>
-                  <s.icon aria-hidden className="text-ink-faint size-5" />
+      {/* Solution: editorial list with rules, not a card grid */}
+      <section aria-labelledby="solution" className="border-ink border-t py-16 sm:py-24">
+        <div className="grid gap-8 lg:grid-cols-12">
+          <div className="lg:col-span-3">
+            <Eyebrow n="02">The approach</Eyebrow>
+          </div>
+          <div className="lg:col-span-9">
+            <h2 id="solution" className="text-heading font-normal text-balance">
+              Questions that quote your resume <em>back to you.</em>
+            </h2>
+            <dl className="divide-line border-line mt-10 divide-y border-y">
+              {[
+                [
+                  "Grounded, or not shown",
+                  "Every personalized question cites an exact line from your resume. Output that invents evidence is rejected, not dressed up.",
+                ],
+                [
+                  "Feedback you can act on",
+                  "Four rubric dimensions, specific strengths and gaps quoting your answer, and an example answer that uses only facts you gave.",
+                ],
+                [
+                  "Difficulty that follows you",
+                  "Two strong answers in a row and the next question gets harder; two weak ones and it eases off. Probes go one level deeper.",
+                ],
+              ].map(([t, d]) => (
+                <div key={t} className="grid gap-2 py-6 md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] md:gap-8">
+                  <dt className="font-display text-2xl leading-tight">{t}</dt>
+                  <dd className="text-ink-soft">{d}</dd>
                 </div>
+              ))}
+            </dl>
+          </div>
+        </div>
+      </section>
+
+      {/* How it works: numbered steps on a rule */}
+      <section aria-labelledby="how" className="border-ink border-t py-16 sm:py-24">
+        <div className="grid gap-8 lg:grid-cols-12">
+          <div className="lg:col-span-3">
+            <Eyebrow n="03">How it works</Eyebrow>
+            <h2 id="how" className="text-heading mt-4 font-normal">
+              Four steps, about fifteen minutes.
+            </h2>
+          </div>
+          <ol className="grid gap-x-8 sm:grid-cols-2 lg:col-span-9">
+            {steps.map((s, i) => (
+              <li key={s.title} className="border-line border-t py-6">
+                <span className="font-display text-accent text-5xl leading-none italic">{i + 1}</span>
                 <h3 className="mt-4 font-semibold">{s.title}</h3>
                 <p className="text-ink-soft mt-2">{s.text}</p>
               </li>
-            </Reveal>
-          ))}
-        </ol>
+            ))}
+          </ol>
+        </div>
       </section>
 
       {/* FAQs */}
-      <section aria-labelledby="faq" className="border-line border-t py-14 sm:py-20">
-        <div className="grid gap-8 lg:grid-cols-[1fr_1.6fr]">
-          <h2 id="faq" className="text-heading font-semibold">
-            Questions, answered
-          </h2>
-          <div className="divide-line border-line bg-surface divide-y rounded-[var(--radius-card)] border">
+      <section aria-labelledby="faq" className="border-ink border-t py-16 sm:py-24">
+        <div className="grid gap-8 lg:grid-cols-12">
+          <div className="lg:col-span-3">
+            <Eyebrow n="04">Questions</Eyebrow>
+            <h2 id="faq" className="text-heading mt-4 font-normal">
+              Before you start.
+            </h2>
+          </div>
+          <div className="divide-line border-line divide-y border-y lg:col-span-9">
             {faqs.map((f) => (
-              <details key={f.q} className="group px-5">
-                <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 py-3 font-semibold [&::-webkit-details-marker]:hidden">
+              <details key={f.q} className="group">
+                <summary className="font-display flex min-h-16 cursor-pointer list-none items-center justify-between gap-4 py-4 text-xl [&::-webkit-details-marker]:hidden">
                   {f.q}
-                  <span aria-hidden className="text-ink-faint transition-transform group-open:rotate-45">
+                  <span
+                    aria-hidden
+                    className="text-accent font-mono text-base transition-transform group-open:rotate-45"
+                  >
                     +
                   </span>
                 </summary>
-                <p className="text-ink-soft pb-5">{f.a}</p>
+                <p className="text-ink-soft max-w-2xl pb-6">{f.a}</p>
               </details>
             ))}
           </div>
@@ -197,13 +205,12 @@ export default function Home() {
       </section>
 
       {/* CTA */}
-      <section className="py-14 sm:py-20">
-        <Card className="flex flex-col items-start gap-6 p-8 sm:p-10 md:flex-row md:items-center md:justify-between">
-          <div>
-            <h2 className="text-heading font-semibold">Ready when you are.</h2>
-            <p className="text-ink-soft mt-2">Five questions take about fifteen minutes. No sign-up.</p>
-          </div>
-          <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
+      <section className="border-ink border-t py-16 sm:py-24">
+        <div className="grid gap-8 lg:grid-cols-12 lg:items-end">
+          <h2 className="text-heading font-normal lg:col-span-7">
+            Your next interview will ask about your work. <em className="text-accent">Rehearse it.</em>
+          </h2>
+          <div className="flex flex-col gap-3 sm:flex-row lg:col-span-5 lg:justify-end">
             <Button asChild size="lg">
               <Link href="/practice">Start practicing</Link>
             </Button>
@@ -211,7 +218,7 @@ export default function Home() {
               <Link href="/practice?sample=1">Try a sample resume</Link>
             </Button>
           </div>
-        </Card>
+        </div>
       </section>
     </div>
   );
@@ -220,42 +227,41 @@ export default function Home() {
 function ProductPreview() {
   return (
     <figure aria-label="Synthetic product preview" className="relative">
-      <Card className="shadow-lift space-y-4 p-5 sm:p-6">
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          <Badge>Synthetic preview · sample data</Badge>
-          <span className="text-ink-faint">Question 2 of 10</span>
+      <div className="border-ink/15 bg-surface shadow-lift rotate-[0.6deg] rounded-[var(--radius-card)] border p-6 sm:p-7">
+        <div className="text-label text-ink-faint flex items-center justify-between font-mono tracking-wide uppercase">
+          <span>Q 02 / 10 · Technical · Medium</span>
+          <span className="text-accent">Sample</span>
         </div>
-        <div className="flex flex-wrap gap-2">
-          <Badge tone="accent">Technical</Badge>
-          <Badge>Medium</Badge>
-        </div>
-        <p className="font-semibold">
-          You reduced API response time with PostgreSQL indexes and pagination. How did you decide which indexes to add?
+        <p className="font-display mt-5 text-2xl leading-snug">
+          “How did you decide which PostgreSQL indexes to add, and how did you verify the improvement?”
         </p>
-        <blockquote className="border-accent/40 text-ink-soft border-l-2 pl-3">
-          “Reduced API response time for the reports endpoint by adding PostgreSQL indexes and query pagination.”
+        <blockquote className="border-accent text-ink-soft mt-5 border-l-2 pl-4 italic">
+          From the resume: Reduced API response time for the reports endpoint by adding PostgreSQL indexes and query
+          pagination.
         </blockquote>
-        <div className="border-line bg-muted rounded-[var(--radius-control)] border p-4">
-          <div className="flex items-baseline justify-between">
-            <span className="font-semibold">Practice score</span>
-            <span className="text-accent font-semibold">7.5 / 10</span>
-          </div>
-          <dl className="text-ink-soft mt-3 grid grid-cols-2 gap-x-4 gap-y-2">
+        <div className="border-line-strong mt-6 flex items-end justify-between border-t border-dashed pt-5">
+          <dl className="text-label text-ink-soft grid grid-cols-2 gap-x-6 gap-y-1 font-mono uppercase">
             {[
               ["Relevance", 4],
               ["Soundness", 4],
               ["Depth", 3],
               ["Clarity", 4],
             ].map(([k, v]) => (
-              <div key={k} className="flex justify-between">
+              <div key={k} className="flex justify-between gap-3">
                 <dt>{k}</dt>
-                <dd className="text-ink font-semibold">{v}/5</dd>
+                <dd className="text-ink">{v}/5</dd>
               </div>
             ))}
           </dl>
+          <p className="text-right">
+            <span className="font-display text-pine block text-5xl leading-none">7.5</span>
+            <span className="text-label text-ink-faint font-mono uppercase">of 10</span>
+          </p>
         </div>
-      </Card>
-      <figcaption className="text-ink-faint mt-3 text-center">Illustrative example with a fictional resume.</figcaption>
+      </div>
+      <figcaption className="text-label text-ink-faint mt-4 font-mono tracking-wide uppercase">
+        Illustration · fictional resume, sample data
+      </figcaption>
     </figure>
   );
 }

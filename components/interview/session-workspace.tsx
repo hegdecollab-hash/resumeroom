@@ -497,7 +497,7 @@ export function SessionWorkspace({ id }: { id: string }) {
                 id="q-heading"
                 ref={questionHeading}
                 tabIndex={-1}
-                className="text-heading font-semibold outline-none"
+                className="font-display text-2xl leading-snug font-normal outline-none sm:text-[1.75rem]"
               >
                 {current.question}
               </h2>

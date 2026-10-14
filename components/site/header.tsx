@@ -3,20 +3,20 @@ import { APP_NAME } from "@/lib/config";
 
 export function Header() {
   return (
-    <header className="no-print border-line bg-canvas/90 border-b">
+    <header className="no-print border-line border-b">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
-        <Link href="/" className="text-ink flex min-h-11 items-center gap-2 font-semibold">
-          <span aria-hidden className="bg-accent grid size-8 place-items-center rounded-lg text-white">
-            R
-          </span>
+        <Link href="/" className="font-display text-ink flex min-h-11 items-baseline gap-0.5 text-2xl italic">
           {APP_NAME}
+          <span aria-hidden className="text-accent not-italic">
+            .
+          </span>
         </Link>
-        <nav aria-label="Main">
+        <nav aria-label="Main" className="flex items-center gap-1">
           <Link
             href="/practice"
-            className="text-accent hover:bg-accent-soft inline-flex min-h-11 items-center rounded-[var(--radius-control)] px-3 font-semibold"
+            className="border-ink text-ink hover:bg-ink hover:text-canvas inline-flex min-h-11 items-center rounded-[var(--radius-control)] border px-4 font-semibold transition-colors"
           >
-            Practice
+            Start practicing
           </Link>
         </nav>
       </div>

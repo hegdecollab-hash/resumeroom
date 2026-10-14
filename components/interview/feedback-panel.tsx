@@ -38,7 +38,7 @@ export function FeedbackPanel({ attempt, onRevealExample }: { attempt: Attempt; 
           </h3>
           <p className="text-ink-faint">AI practice estimate, not a hiring decision.</p>
         </div>
-        <p className={cn("text-heading font-semibold", scoreTone(ev.score))}>
+        <p className={cn("font-display text-heading", scoreTone(ev.score))}>
           {ev.score}
           <span className="text-body text-ink-faint"> / 10</span>
         </p>

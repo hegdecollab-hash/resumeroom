@@ -12,7 +12,3 @@ export const LIMITS = {
   minAnswerChars: 1,
   maxProbesPerQuestion: 2,
 } as const;
-
-export const WHATSAPP_NUMBER = "918500097071";
-export const WHATSAPP_TEXT = `Hi FlowSite AI, I saw ${APP_NAME} and would like a similar website. Can we discuss the scope?`;
-export const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_TEXT)}`;
